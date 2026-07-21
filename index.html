@@ -381,23 +381,46 @@
 <script>
     const cvData = {
         "2010": {
-            phase: "Formation Académique & Ouverture Internationale",
-            phaseType: "edu",
-            title: "2010 - 2015 : Master en Management International",
-            subtitle: "American Business College Paris",
-            items: [
+    phase: "Formation Académique & Ouverture Internationale",
+    phaseType: "edu",
+    title: "2010 - 2015 : Master en Management International",
+    subtitle: "American Business College Paris",
+    items: [
+        {
+            type: "edu",
+            tag: "Formation Universitaire",
+            title: "Master en Management International",
+            institution: "American Business College Paris (2010 - 2015)",
+            details: [
+                "Formation supérieure axée sur le management global, la stratégie et les affaires internationales.",
+            ],
+            // NOUVEAU : Segmentation Internationale
+            international_exchanges: [
                 {
-                    type: "edu",
-                    tag: "Formation Universitaire",
-                    title: "Master en Management International",
-                    institution: "American Business College Paris (2010 - 2015)",
-                    details: [
-                        "Formation supérieure axée sur le management global, la stratégie et les affaires internationales.",
-                        "Semestre d’échange universitaire d'ouverture culturelle et managériale : États-Unis, Chine et Vietnam."
-                    ]
+                    country: "États-Unis",
+                    flag_icon: "🇺🇸",
+                    city: "New York",
+                    year: "2011",
+                    focus: "Business Strategy"
+                },
+                {
+                    country: "Chine",
+                    flag_icon: "🇨🇳",
+                    city: "Shanghai",
+                    year: "2012",
+                    focus: "Global Supply Chain"
+                },
+                {
+                    country: "Vietnam",
+                    flag_icon: "🇻🇳",
+                    city: "Ho Chi Minh",
+                    year: "2013",
+                    focus: "Emerging Markets"
                 }
             ]
-        },
+        }
+    ]
+},
         "2015": {
             phase: "Formation Académique & Spécialisation",
             phaseType: "edu",
