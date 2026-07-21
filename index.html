@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Interactif - Ines-Solene Zouhongbe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --accent-soft: #eff6ff;
+            --accent-border: rgba(37, 99, 235, 0.2);
+
+            --edu-accent: #d97706;
+            --edu-soft: #fffbe3;
+            --edu-border: rgba(217, 119, 6, 0.3);
+
+            --impact-accent: #9333ea;
+            --impact-soft: #faf5ff;
+
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        /* En-tête Profil */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-pic {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center top;
+            border: 4px solid var(--card-bg);
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header h2 {
+            color: var(--accent);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .summary {
+            margin-top: 12px;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            max-width: 780px;
+            text-align: center;
+        }
+
+        /* Compétences / Badges */
+        .skills-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .badge.highlight {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent-border);
+        }
+
+        .badge.certif {
+            background: #f0fdf4;
+            color: #166534;
+            border-color: #bbf7d0;
+            font-weight: 600;
+        }
+
+        /* Chronologie Navigation */
+        .timeline-container {
+            margin: 35px 0 25px 0;
+        }
+
+        .phase-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 0 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .phase-label-edu { color: var(--edu-accent); }
+        .phase-label-active { color: var(--accent); }
+
+        .timeline-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            padding: 0 10px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--edu-accent) 0%, var(--edu-accent) 40%, var(--accent) 60%, var(--accent) 100%);
+            z-index: 1;
+            transform: translateY(-50%);
+            opacity: 0.4;
+        }
+
+        .time-node {
+            position: relative;
+            z-index: 2;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            color: var(--text-muted);
+            width: 110px;
+            height: 42px;
+            border-radius: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-node.node-edu.active {
+            background: var(--edu-accent);
+            border-color: var(--edu-accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+        }
+
+        .time-node.node-active.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+        }
+
+        /* Carte Contenu */
+        .content-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            min-height: 400px;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .content-card.fade {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        .phase-indicator {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .indicator-edu { background: var(--edu-soft); color: var(--edu-accent); border: 1px solid var(--edu-border); }
+        .indicator-active { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-border); }
+
+        .year-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .year-title span {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: normal;
+        }
+
+        .section-block {
+            margin-bottom: 24px;
+        }
+
+        .section-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .tag-exp { background: #e0f2fe; color: #0369a1; }
+        .tag-edu { background: var(--edu-soft); color: var(--edu-accent); }
+        .tag-ngo { background: var(--impact-soft); color: var(--impact-accent); }
+
+        .item-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .item-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .item-subtitle.edu-sub { color: var(--edu-accent); }
+
+        ul.details-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul.details-list li {
+            position: relative;
+            padding-left: 18px;
+            font-size: 0.92rem;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        ul.details-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        ul.details-list.edu-list li::before { color: var(--edu-accent); }
+
+        .kpi-box {
+            margin-top: 10px;
+            background: var(--accent-soft);
+            border-left: 3px solid var(--accent);
+            padding: 10px 14px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.88rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .kpi-box.ngo-kpi {
+            background: var(--impact-soft);
+            border-left-color: var(--impact-accent);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 640px) {
+            .timeline-nav { flex-wrap: wrap; gap: 10px; justify-content: center; }
+            .timeline-line, .phase-labels { display: none; }
+            .time-node { width: 45%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <img src="image_0.png" alt="Ines-Solene Zouhongbe" class="profile-pic">
+        <h1>INES-SOLENE ZOUHONGBE</h1>
+        <h2>Consultante en Transformation Digitale | Product Owner | PMO</h2>
+        
+        <p class="summary">
+            <strong>7 ans d'expérience</strong> en transformation digitale, pilotage de projets IT, CRM et méthodologies Agiles dans les secteurs de l'<strong>énergie</strong> et de la <strong>banque</strong>. Consultante bilingue (Français/Anglais) capable d'aligner enjeux métier et technologiques, de coordonner des équipes pluridisciplinaires et de sécuriser la livraison de programmes complexes.
+        </p>
+
+        <div class="skills-group">
+            <span class="badge certif">PSPO I</span>
+            <span class="badge certif">PSM I</span>
+            <span class="badge certif">PMP (en cours)</span>
+            <span class="badge highlight">Salesforce CRM</span>
+            <span class="badge highlight">Agile (Scrum, Kanban, Hybrid, Waterfall)</span>
+            <span class="badge highlight">Conduite du Changement</span>
+            <span class="badge">Jira / Confluence / Miro</span>
+            <span class="badge">Notions: SQL, Kafka, CAM</span>
+            <span class="badge">Bilingue Français / Anglais</span>
+        </div>
+    </header>
+
+    <div class="timeline-container">
+        <div class="phase-labels">
+            <span class="phase-label-edu">🎓 Formation Académique</span>
+            <span class="phase-label-active">💼 Expérience Professionnelle & Engagement</span>
+        </div>
+        <div class="timeline-nav">
+            <div class="timeline-line"></div>
+            <div class="time-node node-edu" onclick="showYear('2010')">2010 - 2015</div>
+            <div class="time-node node-edu" onclick="showYear('2015')">2015 - 2017</div>
+            <div class="time-node node-active active" onclick="showYear('2018')">2018 - 2024</div>
+            <div class="time-node node-active" onclick="showYear('2025')">2025</div>
+        </div>
+    </div>
+
+    <div class="content-card" id="contentCard"></div>
+
+    <footer>
+        <p><strong>Contact :</strong> ines.solene@gmail.com | +33 6 65 19 66 40 | Riviera Palmeraie</p>
+    </footer>
+</div>
+
+<script>
+    const cvData = {
+        "2010": {
+            phase: "Formation Académique & Ouverture Internationale",
+            phaseType: "edu",
+            title: "2010 - 2015 : Master en Management International",
+            subtitle: "American Business College Paris",
+            items: [
+                {
+                    type: "edu",
+                    tag: "Formation Universitaire",
+                    title: "Master en Management International",
+                    institution: "American Business College Paris (2010 - 2015)",
+                    details: [
+                        "Formation supérieure axée sur le management global, la stratégie et les affaires internationales.",
+                        "Semestre d’échange universitaire d'ouverture culturelle et managériale : États-Unis, Chine et Vietnam."
+                    ]
+                }
+            ]
+        },
+        "2015": {
+            phase: "Formation Académique & Spécialisation",
+            phaseType: "edu",
+            title: "2015 - 2017 : MSc Corporate and Financial Management",
+            subtitle: "Skema Business School",
+            items: [
+                {
+                    type: "edu",
+                    tag: "Formation Universitaire",
+                    title: "MSc Corporate and Financial Management",
+                    institution: "Skema Business School (2015 - 2017)",
+                    details: [
+                        "Master of Science spécialisé en gestion financière d'entreprise, analyse stratégique, évaluation d'entreprise et pilotage de la performance."
+                    ]
+                }
+            ]
+        },
+        "2018": {
+            phase: "EXPÉRIENCE PROFESSIONNELLE MAJEURE (ACCENTURE)",
+            phaseType: "active",
+            title: "2018 - 2024 : Consultante Transformation Digitale chez ACCENTURE",
+            subtitle: "",
+            items: [
+                {
+                    type: "exp",
+                    tag: "Expérience Pro",
+                    title: "Product Owner bilingue – Conduite du Changement",
+                    institution: "Accenture | Client Secteur Énergie — Programme CRM Salesforce",
+                    details: [
+                        "Pilotage de la conduite du changement lors du déploiement du nouveau SI CRM basés sur Salesforce (centralisation des contrats, commandes et interactions commerciales).",
+                        "Élaboration et mise en œuvre de la stratégie d'adoption auprès des équipes métiers : identification des freins, collecte des besoins et ajustement des parcours de formation.",
+                        "Animation d'ateliers utilisateurs, collecte continue des retours terrain et priorisation des améliorations fonctionnelles avec les équipes produit.",
+                        "Accompagnement opérationnel des équipes commerciales françaises et internationales dans l'appropriation des nouveaux processus et outils."
+                    ],
+                    kpi: "🎯 Résultat : Augmentation progressive du taux d'utilisation de l'application d'environ +10 % par semaine grâce à un accompagnement de proximité."
+                },
+                {
+                    type: "exp",
+                    tag: "Expérience Pro",
+                    title: "Analyste Fonctionnel puis Proxy Product Owner – Parcours Client",
+                    institution: "Accenture | Client Secteur Énergie — Refonte du SI",
+                    details: [
+                        "Remplacement de plusieurs systèmes d'information historiques complexes par une plateforme unifiée.",
+                        "Pilotage des ateliers de cadrage fonctionnel, formalisation des besoins métiers (User Stories) et gestion/priorisation du backlog (équipes allant jusqu'à 20 collaborateurs).",
+                        "Coordination fluide entre les équipes métier, les développeurs, les architectes et l'équipe de recette applicative.",
+                        "Co-responsable du Maintien en Conditions Opérationnelles (MCO) lors du Go-Live (qualification, arbitrage et suivi de la résolution des anomalies)."
+                    ]
+                },
+                {
+                    type: "exp",
+                    tag: "Expérience Pro",
+                    title: "Project Management Officer (PMO) – Programme CRM",
+                    institution: "Accenture | Client Secteur Énergie — Gouvernance & Coordination",
+                    details: [
+                        "Contribution majeure au pilotage d'un programme stratégique CRM Salesforce en assurant la coordination opérationnelle Métier & IT.",
+                        "Organisation et animation de la gouvernance projet : COPROJ, COPIL et comités opérationnels, avec suivi strict de l'exécution des décisions.",
+                        "Suivi consolidé des plannings, livrables, ressources, risques et dépendances pour sécuriser le respect des jalons.",
+                        "Conception et mise à jour des tableaux de bord et indicateurs clés de pilotage (KPIs) pour le management et les parties prenantes."
+                    ]
+                }
+            ]
+        },
+        "2025": {
+            phase: "Leadership, Projets & Engagement Stratégique",
+            phaseType: "active",
+            title: "2025 : Engagements Stratégiques & Initiatives",
+            subtitle: "Présidence Alumni & Entrepreneuriat Social",
+            items: [
+                {
+                    type: "ngo",
+                    tag: "Engagement Stratégique",
+                    title: "Présidente du réseau Alumni",
+                    institution: "American Business College Paris (2025)",
+                    details: [
+                        "Présidence d’un réseau international de diplômés, avec responsabilité de la vision stratégique, de la gouvernance et du développement de la communauté.",
+                        "Conception et animation d'un atelier de développement professionnel sur les compétences comportementales (« soft skills ») et les attitudes indispensables pour réussir son intégration et son évolution en entreprise.",
+                        "Pilotage, en partenariat avec Michael Page, de la conception de la Salary Game Night, un événement innovant de sensibilisation aux pratiques de rémunération, de négociation salariale et de gestion de carrière destiné aux étudiants et jeunes diplômés.",
+                        "Création d'une base de données interactive centralisant les CV des alumni et leurs domaines d'expertise afin de faciliter les mises en relation professionnelles, le mentorat, les recommandations et le recrutement au sein du réseau."
+                    ],
+                    kpi: "🚀 Impact : Plus de 90 nouvelles adhésions au groupe LinkedIn."
+                },
+                {
+                    type: "ngo",
+                    tag: "Projet & Impact",
+                    title: "Fondatrice — TIARA PRO",
+                    institution: "Plateforme d’accompagnement carrière & Community Building",
+                    details: [
+                        "Création et développement d'une plateforme dédiée à l'accompagnement et à la montée en compétences de jeunes femmes professionnelles.",
+                        "Conception et animation d’un écosystème de contenus multicanal (podcast, chaîne YouTube, publications LinkedIn, ateliers événements).",
+                        "Développement d'une communauté engagée et suivi analytique de la croissance et de la portée des contenus."
+                    ],
+                    kpi: "🚀 Impact : Communauté YouTube active de +725 abonnés et +26 700 vues cumulées."
+                }
+            ]
+        }
+    };
+
+    function renderYear(yearKey) {
+        const data = cvData[yearKey];
+        const card = document.getElementById('contentCard');
+
+        card.classList.add('fade');
+
+        setTimeout(() => {
+            const isEdu = data.phaseType === 'edu';
+            const indicatorClass = isEdu ? 'indicator-edu' : 'indicator-active';
+            const subClass = isEdu ? 'edu-sub' : '';
+            const listClass = isEdu ? 'edu-list' : '';
+
+            let html = `
+                <span class="phase-indicator ${indicatorClass}">${data.phase}</span>
+                <div class="year-title">
+                    ${data.title}
+                    ${data.subtitle ? `<span>${data.subtitle}</span>` : ''}
+                </div>
+            `;
+
+            data.items.forEach(item => {
+                let tagClass = "tag-exp";
+                if(item.type === "edu") tagClass = "tag-edu";
+                if(item.type === "ngo") tagClass = "tag-ngo";
+
+                html += `
+                    <div class="section-block">
+                        <span class="section-tag ${tagClass}">${item.tag}</span>
+                        <div class="item-title">${item.title}</div>
+                        <div class="item-subtitle ${subClass}">${item.institution}</div>
+                        <ul class="details-list ${listClass}">
+                            ${item.details.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                        ${item.kpi ? `<div class="kpi-box ${item.type === 'ngo' ? 'ngo-kpi' : ''}">${item.kpi}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            card.innerHTML = html;
+            card.classList.remove('fade');
+        }, 180);
+    }
+
+    function showYear(yearKey) {
+        const nodes = document.querySelectorAll('.time-node');
+        nodes.forEach(node => {
+            node.classList.remove('active');
+            if (node.getAttribute('onclick').includes(yearKey)) {
+                node.classList.add('active');
+            }
+        });
+
+        renderYear(yearKey);
+    }
+
+    window.onload = () => {
+        renderYear('2018');
+    };
+</script>
+
+</body>
+</html>

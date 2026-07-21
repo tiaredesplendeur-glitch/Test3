@@ -1,0 +1,12 @@
+# Configuration simple pour GitLab Pages
+pages:
+  stage: deploy
+  script:
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  only:
+    - main # Ou 'master' selon le nom de votre branche principale
