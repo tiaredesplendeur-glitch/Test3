@@ -324,7 +324,75 @@
             font-size: 0.85rem;
             color: var(--text-muted);
         }
+/* --- Segmentation Internationale (Nouveau Style) --- */
 
+.international-exchanges-block {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border);
+}
+
+.international-title {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.international-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.exchange-card {
+    background: #f8fafc; /* Légèrement grisé */
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exchange-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.exchange-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.country-flag {
+    font-size: 1.3rem;
+}
+
+.country-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.exchange-details {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    color: var(--text-main);
+}
+
+.exchange-meta {
+    font-weight: 500;
+    color: var(--accent);
+}
+
+.exchange-focus {
+    font-weight: 400;
+    color: var(--text-muted);
+}
         @media (max-width: 640px) {
             .timeline-nav { flex-wrap: wrap; gap: 10px; justify-content: center; }
             .timeline-line, .phase-labels { display: none; }
@@ -551,6 +619,28 @@
                         <ul class="details-list ${listClass}">
                             ${item.details.map(d => `<li>${d}</li>`).join('')}
                         </ul>
+                        // NOUVEAU : Rendu de la segmentation internationale
+if (item.international_exchanges) {
+    html += `
+        <div class="international-exchanges-block">
+            <div class="international-title">Focus International :</div>
+            <div class="international-grid">
+                ${item.international_exchanges.map(ex => `
+                    <div class="exchange-card">
+                        <div class="exchange-header">
+                            <span class="country-flag">${ex.flag_icon}</span>
+                            <span class="country-name">${ex.country}</span>
+                        </div>
+                        <div class="exchange-details">
+                            <span class="exchange-meta">${ex.city}, ${ex.year}</span>
+                            <span class="exchange-focus">${ex.focus}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
                         ${item.kpi ? `<div class="kpi-box ${item.type === 'ngo' ? 'ngo-kpi' : ''}">${item.kpi}</div>` : ''}
                     </div>
                 `;
