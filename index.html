@@ -631,7 +631,13 @@
                                             <span class="country-name">${ex.country}</span>
                                         </div>
                                         <div class="exchange-details">
-                                            <span class="exchange-meta">${ex.city}, ${ex.year}</span>
+
+                                            <!-- MODIFICATION ICI POUR L'ANNÉE CONDITIONNELLE -->
+                                            <span class="exchange-meta">
+                                                ${ex.city}
+                                                ${ex.year ? `, ${ex.year}` : ''} <!-- Affiche ', année' si l'année existe, sinon rien -->
+                                            </span>
+                                            
                                             <span class="exchange-focus">${ex.focus}</span>
                                         </div>
                                     </div>
